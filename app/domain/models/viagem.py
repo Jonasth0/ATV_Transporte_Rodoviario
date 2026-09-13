@@ -38,7 +38,7 @@ viagem = ViagemNormalizada(
         "cidade": "Recife",
         "uf": "PE"
     },
-    partida=datetime.fromsoformat("2026-10-15T06:30:00-03:00"),
+    partida=datetime.fromisoformat("2026-10-15T06:30:00-03:00"),
     chegada=datetime.fromisoformat("2026-10-15T12:50:00-03:00"),
     duracao_minutos=380,
     preco={
