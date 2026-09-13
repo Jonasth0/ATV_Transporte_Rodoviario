@@ -1,5 +1,3 @@
-from datetime import datetime
-from decimal import Decimal
 from typing import Any
 
 from app.domain.models.viagem import (
@@ -8,6 +6,20 @@ from app.domain.models.viagem import (
     ViagemNormalizada,
 )
 from app.domain.strategies.base import ViagemStrategy
+from app.domain.utils.conversores import (
+    converter_assentos,
+    converter_data,
+    converter_duracao,
+    converter_preco_br,
+)
+from app.domain.utils.validadores import (
+    validar_assentos,
+    validar_categoria,
+    validar_datas,
+    validar_duracao,
+    validar_preco,
+    validar_uf,
+)
 
 
 class ProgressoStrategy(ViagemStrategy):
@@ -28,19 +40,23 @@ class ProgressoStrategy(ViagemStrategy):
         payload: dict[str, Any],
     ) -> ViagemNormalizada:
 
-        partida = self._converter_data(
-            payload["dataHoraSaida"]
+        partida = converter_data(
+            payload["dataHoraSaida"],
+            "%d/%m/%Y %H:%M",
+            "partida",
         )
 
-        chegada = self._converter_data(
-            payload["dataHoraChegada"]
+        chegada = converter_data(
+            payload["dataHoraChegada"],
+            "%d/%m/%Y %H:%M",
+            "chegada",
         )
 
-        duracao = self._converter_duracao(
+        duracao = converter_duracao(
             payload["tempoEstimado"]
         )
 
-        preco = self._converter_preco(
+        preco_valor = converter_preco_br(
             payload["valorPassagem"]
         )
 
@@ -48,8 +64,22 @@ class ProgressoStrategy(ViagemStrategy):
             payload["tipoServico"]
         )
 
-        assentos = self._converter_assentos(
+        assentos = converter_assentos(
             payload["assentosDisponiveis"]
+        )
+
+        validar_datas(partida, chegada)
+        validar_duracao(partida, chegada, duracao)
+        validar_preco(preco_valor)
+        validar_assentos(assentos)
+
+        validar_uf(payload["ufOrigem"])
+        validar_uf(payload["ufDestino"])
+        validar_categoria(categoria)
+
+        preco = Preco(
+            valor=preco_valor,
+            moeda="BRL",
         )
 
         return ViagemNormalizada(
@@ -74,26 +104,6 @@ class ProgressoStrategy(ViagemStrategy):
     def nome_empresa(self) -> str:
         return "Auto Viação Progresso"
 
-    def _converter_data(self, valor: str) -> datetime:
-        return datetime.strptime(
-            valor,
-            "%d/%m/%Y %H:%M",
-        )
-
-    def _converter_duracao(self, valor: str) -> int:
-        horas, minutos = valor.split(":")
-        return int(horas) * 60 + int(minutos)
-
-    def _converter_preco(self, valor: str) -> Preco:
-        valor_decimal = Decimal(
-            valor.replace(".", "").replace(",", ".")
-        )
-
-        return Preco(
-            valor=valor_decimal,
-            moeda="BRL",
-        )
-
     def _normalizar_categoria(self, valor: str) -> str:
         categorias = {
             "CONVENCIONAL": "convencional",
@@ -108,6 +118,3 @@ class ProgressoStrategy(ViagemStrategy):
             raise ValueError("Categoria inválida.")
 
         return categoria
-
-    def _converter_assentos(self, valor: str) -> int:
-        return int(valor)

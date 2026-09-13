@@ -1,5 +1,3 @@
-from datetime import datetime
-from decimal import Decimal
 from typing import Any
 
 from app.domain.models.viagem import (
@@ -8,6 +6,20 @@ from app.domain.models.viagem import (
     ViagemNormalizada,
 )
 from app.domain.strategies.base import ViagemStrategy
+from app.domain.utils.conversores import (
+    converter_assentos,
+    converter_data,
+    converter_duracao,
+    converter_preco_centavos,
+)
+from app.domain.utils.validadores import (
+    validar_assentos,
+    validar_categoria,
+    validar_datas,
+    validar_duracao,
+    validar_preco,
+    validar_uf,
+)
 
 
 class RotaStrategy(ViagemStrategy):
@@ -26,15 +38,45 @@ class RotaStrategy(ViagemStrategy):
         payload: dict[str, Any],
     ) -> ViagemNormalizada:
 
-        partida = datetime.fromisoformat(
-            payload["partida_em"]
+        partida = converter_data(
+            payload["partida_em"],
+            campo="partida_em",
         )
 
-        chegada = datetime.fromisoformat(
-            payload["chegada_em"]
+        chegada = converter_data(
+            payload["chegada_em"],
+            campo="chegada_em",
         )
 
-        preco = Decimal(payload["tarifa_centavos"]) / 100
+        duracao = converter_duracao(
+            payload["duracao_minutos"]
+        )
+
+        preco_valor = converter_preco_centavos(
+            payload["tarifa_centavos"]
+        )
+
+        categoria = self._normalizar_categoria(
+            payload["classe"]
+        )
+
+        assentos = converter_assentos(
+            payload["vagas"]
+        )
+
+        validar_datas(partida, chegada)
+        validar_duracao(partida, chegada, duracao)
+        validar_preco(preco_valor)
+        validar_assentos(assentos)
+
+        validar_uf(payload["origem"]["estado"])
+        validar_uf(payload["destino"]["estado"])
+        validar_categoria(categoria)
+
+        preco = Preco(
+            valor=preco_valor,
+            moeda=payload["moeda"],
+        )
 
         return ViagemNormalizada(
             id_viagem=payload["trip_id"],
@@ -53,24 +95,23 @@ class RotaStrategy(ViagemStrategy):
             partida=partida,
             chegada=chegada,
 
-            duracao_minutos=payload["duracao_minutos"],
+            duracao_minutos=duracao,
 
-            preco=Preco(
-                valor=preco,
-                moeda=payload["moeda"],
-            ),
+            preco=preco,
 
-            categoria=self._normalizar_categoria(
-                payload["classe"]
-            ),
+            categoria=categoria,
 
-            assentos_disponiveis=payload["vagas"],
+            assentos_disponiveis=assentos,
         )
 
     def nome_empresa(self) -> str:
         return "Rota Transportes"
 
-    def _normalizar_categoria(self, valor: str) -> str:
+    def _normalizar_categoria(
+        self,
+        valor: str,
+    ) -> str:
+
         categorias = {
             "convencional": "convencional",
             "executivo": "executivo",
