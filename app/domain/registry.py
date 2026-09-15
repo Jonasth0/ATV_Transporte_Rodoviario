@@ -4,6 +4,7 @@ from app.domain.strategies.base import ViagemStrategy
 from app.domain.strategies.gontijo import GontijoStrategy
 from app.domain.strategies.progresso import ProgressoStrategy
 from app.domain.strategies.rota import RotaStrategy
+from app.domain.strategies.sao_geraldo import SaoGeraldoStrategy
 from app.domain.strategies.sertao_bus import SertaoBusStrategy
 
 
@@ -15,6 +16,7 @@ class StrategyRegistry:
             RotaStrategy(),
             GontijoStrategy(),
             SertaoBusStrategy(),
+            SaoGeraldoStrategy(),
         ]
 
     def identificar(
