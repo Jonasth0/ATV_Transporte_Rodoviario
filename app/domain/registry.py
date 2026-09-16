@@ -19,13 +19,15 @@ class StrategyRegistry:
             SaoGeraldoStrategy(),
         ]
 
+# PADRÃO STRATEGY - Testa cada adapter até um deles reconhecer o formato.
+
     def identificar(
         self,
         payload: dict[str, Any],
-    ) -> ViagemStrategy | None:
+    ) -> ViagemStrategy | None: # Recebe um único payload, devolve um objeto strategy, ou "None" se nenhum servir.
 
-        for strategy in self._strategies:
-            if strategy.identifica(payload):
+        for strategy in self._strategies: # Lembra do Range? Esqueça, aqui já tem a lista pronta.
+            if strategy.identifica(payload): # Recohece o payload. ( Executa um código de cada Strategy, polimorfismo meu filho ).
                 return strategy
 
         return None

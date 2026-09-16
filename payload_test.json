@@ -1,0 +1,63 @@
+[
+  {
+    "codigoViagem": "PRG-2026-001",
+    "cidadeOrigem": "Paulo Afonso",
+    "ufOrigem": "BA",
+    "cidadeDestino": "Recife",
+    "ufDestino": "PE",
+    "dataHoraSaida": "15/10/2026 06:30",
+    "dataHoraChegada": "15/10/2026 12:50",
+    "tempoEstimado": "06:20",
+    "valorPassagem": "129,90",
+    "tipoServico": "EXECUTIVO",
+    "assentosDisponiveis": "18"
+  },
+  {
+    "trip_id": "ROT-2026-872",
+    "origem": { "municipio": "Paulo Afonso", "estado": "BA" },
+    "destino": { "municipio": "Aracaju", "estado": "SE" },
+    "partida_em": "2026-10-15T07:00:00-03:00",
+    "chegada_em": "2026-10-15T12:10:00-03:00",
+    "duracao_minutos": 310,
+    "tarifa_centavos": 8990,
+    "moeda": "BRL",
+    "classe": "convencional",
+    "vagas": 22
+  },
+  {
+    "reserva": "GON-2026-554",
+    "embarque": { "cidade": "Paulo Afonso", "uf": "BA" },
+    "desembarque": { "cidade": "Belo Horizonte", "uf": "MG" },
+    "saida": "2026-10-15T19:30:00-03:00",
+    "chegada": "2026-10-16T12:10:00-03:00",
+    "duracao": 1000,
+    "preco_centavos": 28950,
+    "moeda": "BRL",
+    "servico": "SEMI",
+    "assentos": 9
+  },
+  {
+    "codigo": "SB-2026-001",
+    "de": { "nome": "Petrolândia", "sigla": "PE" },
+    "para": { "nome": "Paulo Afonso", "sigla": "BA" },
+    "embarque": "2026-10-20T08:00:00",
+    "desembarque": "2026-10-20T11:30:00",
+    "duracao": "03:30",
+    "valor": "75.50",
+    "tipo": "Leito",
+    "lugares_livres": "12",
+    "moeda": "BRL"
+  },
+  {
+    "codigoServico": "SGR-2026-321",
+    "localEmbarque": { "municipio": "Paulo Afonso", "uf": "BA" },
+    "localDesembarque": { "municipio": "Juazeiro", "uf": "BA" },
+    "horarioPartida": "2026-10-15 09:15",
+    "horarioChegada": "2026-10-15 10:45",
+    "tempoViagemMinutos": 90,
+    "precoPassagem": "45,00",
+    "moedaPagamento": "BRL",
+    "tipoAssento": "Convencional",
+    "vagasDisponiveis": 30
+  }
+]

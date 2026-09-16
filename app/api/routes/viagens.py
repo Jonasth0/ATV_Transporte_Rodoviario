@@ -11,7 +11,7 @@ router = APIRouter(
     tags=["Viagens"],
 )
 
-
+# Só monta o registry e delega.
 @router.post("/normalizar")
 def normalizar_viagens(
     payloads: list[dict[str, Any]],

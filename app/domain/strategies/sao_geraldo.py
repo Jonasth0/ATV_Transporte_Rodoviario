@@ -21,7 +21,6 @@ from app.domain.utils.validadores import (
     validar_uf,
 )
 
-
 class SaoGeraldoStrategy(ViagemStrategy):
 
     def identifica(self, payload: dict[str, Any]) -> bool:

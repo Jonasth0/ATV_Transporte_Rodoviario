@@ -11,7 +11,8 @@ app = FastAPI(
     version="1.0.0",
 )
 
-
+# Centraliza o tratamento de erro. 
+# Todas strategy só lançam ViagemValidationError, e o FastAPI intercepta.
 @app.exception_handler(ViagemValidationError)
 async def tratar_erro_viagem(
     request: Request,
