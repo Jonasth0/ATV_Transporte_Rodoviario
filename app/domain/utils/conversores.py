@@ -49,13 +49,13 @@ def converter_duracao(
             mensagem="A duração informada é inválida.",
         )
 
-
+# Principio DRY ( Don't Repeat Yourself ).
 def converter_preco_br(
     valor: str,
 ) -> Decimal:
 
     try:
-        return Decimal(
+        return Decimal( # Decimal é mais preciso que float. ( História do FOGUETE EUROPEU AE ).
             valor.replace(".", "").replace(",", ".")
         )
 
