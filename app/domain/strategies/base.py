@@ -15,6 +15,6 @@ class ViagemStrategy(ABC):
         pass
 
     @abstractmethod
-    def nome_empresa(self) -> str: # Apenas preenche o nome da empresa.
+    def nome_empresa(self) -> str:
         pass
     

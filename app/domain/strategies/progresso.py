@@ -24,6 +24,7 @@ from app.domain.utils.validadores import (
 
 class ProgressoStrategy(ViagemStrategy):
 
+# Cada empresa manda um JSON com nomes de campos diferentes.
     def identifica(self, payload: dict[str, Any]) -> bool:
         return (
             "codigoViagem" in payload

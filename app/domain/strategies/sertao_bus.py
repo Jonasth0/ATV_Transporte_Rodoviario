@@ -23,6 +23,7 @@ from app.domain.utils.validadores import (
 
 class SertaoBusStrategy(ViagemStrategy):
 
+# Cada empresa manda um JSON com nomes de campos diferentes.
     def identifica(self, payload: dict[str, Any]) -> bool:
         return (
             "codigo" in payload
